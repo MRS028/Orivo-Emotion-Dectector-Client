@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button";
+import useScrollUp from "@/Hooks/useScrollUp";
 import { FaRegSmileBeam } from "react-icons/fa";
 import { MdImageSearch, MdOutlineAudiotrack } from "react-icons/md";
 import { Link } from "react-router-dom";
 
 const Home = () => {
+  useScrollUp();
   return (
     <section className="bg-gradient-to-br from-indigo-50 to-white min-h-screen flex flex-col justify-center items-center text-center px-6">
       {/* Hero Section */}

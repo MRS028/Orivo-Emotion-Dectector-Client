@@ -1,43 +1,88 @@
 import { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/Hooks/useAuth";
+import Swal from "sweetalert2";
 
-const Navbar = () => {
+const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { user, logOut } = useAuth(); // User authentication state
+  const navigate = useNavigate();
 
-  const navLinks = [
+  const guestLinks = [
     { name: "Home", href: "/" },
     { name: "Features", href: "/features" },
     { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
   ];
 
+  const userLinks = [
+    { name: "Dashboard", href: "/dashboard" },
+    { name: "Profile", href: "/profile" },
+    { name: "Emotions", href: "/emotions" },
+  ];
+
+  // ✅ SweetAlert logout
+  const handleLogout = async () => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You will be logged out!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, logout!",
+      cancelButtonText: "Cancel",
+    });
+
+    if (result.isConfirmed) {
+      logOut();
+      Swal.fire({
+        icon: "success",
+        title: "Logged out",
+        text: "You have been logged out successfully!",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+      navigate("/"); // redirect after logout
+    }
+  };
+
   return (
     <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-md border-b">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
         {/* Logo */}
-        <div className="text-2xl font-bold text-indigo-600">Orivo</div>
+        <Link to="/" className="text-2xl font-bold text-indigo-600">
+          Orivo
+        </Link>
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-6">
-          {navLinks.map((link) => (
-            <a
+          {(user ? userLinks : guestLinks).map((link) => (
+            <Link
               key={link.name}
-              href={link.href}
+              to={link.href}
               className="text-gray-700 hover:text-indigo-600 transition-colors font-medium"
             >
               {link.name}
-            </a>
+            </Link>
           ))}
-          <Link
-            to="/signup"
-            
-          >
-            <Button className="bg-indigo-600 hover:bg-indigo-700 text-white w-full rounded-full">
-              Get Started
-            </Button>{" "}
-          </Link>
+
+          {user ? (
+            <Button
+              onClick={handleLogout}
+              className="bg-red-500 hover:bg-red-600 text-white  rounded-full"
+            >
+              Logout
+            </Button>
+          ) : (
+            <Link to="/signup">
+              <Button className="bg-indigo-600 hover:bg-indigo-700 text-white w-full rounded-full">
+                Get Started
+              </Button>
+            </Link>
+          )}
         </div>
 
         {/* Mobile Toggle */}
@@ -53,22 +98,37 @@ const Navbar = () => {
       {isOpen && (
         <div className="md:hidden bg-white border-t shadow-lg">
           <div className="flex flex-col space-y-3 p-4">
-            {navLinks.map((link) => (
-              <a
+            {(user ? userLinks : guestLinks).map((link) => (
+              <Link
                 key={link.name}
-                href={link.href}
+                to={link.href}
                 className="text-gray-700 hover:text-indigo-600 transition-colors font-medium"
+                onClick={() => setIsOpen(false)} // close menu on link click
               >
                 {link.name}
-              </a>
+              </Link>
             ))}
-            <Link
-              to="/signup"
-            >
-              <Button className="bg-indigo-600 hover:bg-indigo-700 text-white w-full rounded-full">
-                Get Started
-              </Button>{" "}
-            </Link>
+
+            {user ? (
+              <Button
+                onClick={() => {
+                  handleLogout();
+                  setIsOpen(false);
+                }}
+                className="bg-red-500 hover:bg-red-600 text-white w-full rounded-full"
+              >
+                Logout
+              </Button>
+            ) : (
+              <Link to="/signup">
+                <Button
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white w-full rounded-full"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Get Started
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       )}

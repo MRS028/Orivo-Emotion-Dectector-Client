@@ -1,9 +1,12 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import Home from "@/pages/Home/Home";
-import TextInput from "@/pages/TextResponse/TextInput";
 import Login from "@/pages/Auth/Login";
 import SignUp from "@/pages/Auth/SignUp";
+import ProtectedTextInput from "./ProtectedTextInput";
+import About from "@/pages/pages/About";
+import Features from "@/pages/pages/Features";
+import Contact from "@/pages/pages/Contact";
 
 
 export const router = createBrowserRouter([
@@ -17,7 +20,19 @@ export const router = createBrowserRouter([
       },
       {
         path: "/text-response",
-        Component: TextInput,
+        Component: ProtectedTextInput,
+      },
+      {
+        path: "/about",
+        Component: About,
+      },
+      {
+        path: "/features",
+        Component: Features,
+      },
+      {
+        path: "/contact",
+        Component: Contact,
       },
       {
         path: "/login",
