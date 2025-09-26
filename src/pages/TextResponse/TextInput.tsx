@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // src/components/TextResponseBox.tsx
-
 import React, { useState } from "react";
 import {
   Card,
@@ -21,17 +21,20 @@ import {
   formatPercent,
   computeConfidenceGap,
 } from "@/lib/textResponseUtils";
+ // JWT Protected Axios
 import "@/styles/progress-percent.css";
+
+import axios from "axios";
+import { useAuth } from "@/Hooks/useAuth";
 
 interface TextResponseBoxProps {
   placeholder?: string;
   maxLength?: number;
-  onSubmit?: (text: string) => void | Promise<void>;
   autoClear?: boolean;
+  user?: any; // Or use a proper User type
 }
 
 // --- SKELETON LOADER ---
-// --- SKELETON LOADER COMPONENT ---
 interface ResultsSkeletonProps {
   topEmotion: Emotion | null;
   results: Emotion[] | null;
@@ -91,31 +94,41 @@ const ResultsSkeleton: React.FC<ResultsSkeletonProps> = ({
 const TextResponseBox: React.FC<TextResponseBoxProps> = ({
   placeholder = "Enter text to analyze... (e.g., 'I had a wonderful day!')",
   maxLength = 500,
-  onSubmit,
   autoClear = true,
 }) => {
   const [text, setText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState<Emotion[] | null>(null);
+  const {user} = useAuth();
 
-  const handleAnalyze = async () => {
-    if (text.trim().length === 0) return;
-    setIsLoading(true);
-    setResults(null);
+const handleAnalyze = async () => {
+  if (!text.trim()) return;
+  setIsLoading(true);
+  setResults(null);
 
-    // Simulate network delay
-    await new Promise((res) => setTimeout(res, 800 + Math.random() * 700));
+  // --- Simulate delay ---
+  await new Promise((res) => setTimeout(res, 800 + Math.random() * 700));
 
-    if (onSubmit) {
-      void onSubmit(text.trim());
-    }
+  // --- Generate fake emotions ---
+  const fakeEmotions = generateFakeEmotions(text.trim());
+  setResults(fakeEmotions);
+  const topEmotion = fakeEmotions[0];
 
-    const fakeEmotions = generateFakeEmotions(text.trim());
-    setResults(fakeEmotions);
-    setIsLoading(false);
+  // --- Save emotion to database ---
+  try {
+    await axios.post("http://localhost:5000/api/emotions", {
+      email: user?.email, // You'll need to pass the user prop or use context
+      text: text.trim(),
+      detectedEmotion: topEmotion.label,
+    });
+    console.log("✅ Emotion saved to server!");
+  } catch (err) {
+    console.error("❌ Failed to save emotion:", err);
+  }
 
-    if (autoClear) setText("");
-  };
+  setIsLoading(false);
+  if (autoClear) setText("");
+};
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
@@ -128,7 +141,6 @@ const TextResponseBox: React.FC<TextResponseBoxProps> = ({
     () => (results && results.length ? results[0] : null),
     [results]
   );
-
   const secondEmotion = results?.[1];
   const confidenceGap = computeConfidenceGap(results);
 
@@ -226,13 +238,11 @@ const TextResponseBox: React.FC<TextResponseBoxProps> = ({
               </span>
             </div>
 
-            {/* Close call check */}
             {confidenceGap !== null && confidenceGap < 0.1 && secondEmotion && (
               <div className="mt-2 text-sm text-muted-foreground">
                 Close call — could also be{" "}
                 <strong>
-                  {secondEmotion.label} ({Math.round(secondEmotion.score * 100)}
-                  %)
+                  {secondEmotion.label} ({Math.round(secondEmotion.score * 100)}%)
                 </strong>
               </div>
             )}

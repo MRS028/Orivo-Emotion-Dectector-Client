@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import axios from "axios";
 
 interface SignUpFormData {
   name: string;
@@ -57,32 +58,55 @@ const SignUp: React.FC = () => {
   };
 
   const onSubmit = async (data: SignUpFormData) => {
-    try {
-      const userCredential = await createUser(data.email, data.password);
-      if (userCredential.user) {
-        await updateUserProfile(data.name, "");
-        showSuccessAlert("Your account has been created successfully!");
-        navigate("/");
-      }
-    } catch (error: any) {
-      const msg =
-        error.message || "Failed to create account. Please try again.";
-      setError("root", { type: "manual", message: msg });
-      showErrorAlert(msg);
-    }
-  };
+  try {
+    // 1️⃣ Firebase Authentication
+    const userCredential = await createUser(data.email, data.password);
+    if (userCredential.user) {
+      await updateUserProfile(data.name, "");
 
-  const handleGoogleSignUp = async () => {
-    try {
-      await googleSignIn();
-      showSuccessAlert("Signed up successfully with Google!");
+      // 2️⃣ Send user data to your server
+      try {
+        const res = await axios.post("http://localhost:5000/api/users/register", {
+          name: data.name,
+          email: data.email,
+          
+        });
+        console.log("✅ User saved on server:", res.data);
+      } catch (err: any) {
+        console.error("❌ Failed to save user on server:", err.response?.data || err.message);
+      }
+
+      showSuccessAlert("Your account has been created successfully!");
       navigate("/");
-    } catch (error: any) {
-      const msg = error.message || "Google sign up failed. Please try again.";
-      setError("root", { type: "manual", message: msg });
-      showErrorAlert(msg);
     }
-  };
+  } catch (error: any) {
+    const msg =
+      error.message || "Failed to create account. Please try again.";
+    setError("root", { type: "manual", message: msg });
+    showErrorAlert(msg);
+  }
+};
+
+ const handleGoogleSignUp = async () => {
+  try {
+    const result = await googleSignIn();
+    const user = result.user;
+
+    // Save user on server
+    await axios.post("http://localhost:5000/api/users", {
+      name: user.displayName,
+      email: user.email,
+    });
+
+    showSuccessAlert("Signed up successfully with Google!");
+    navigate("/");
+  } catch (error: any) {
+    const msg = error.message || "Google sign up failed. Please try again.";
+    setError("root", { type: "manual", message: msg });
+    showErrorAlert(msg);
+  }
+};
+
 
   const handleFacebookSignUp = async () => {
     try {

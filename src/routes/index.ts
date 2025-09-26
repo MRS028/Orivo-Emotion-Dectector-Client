@@ -7,6 +7,7 @@ import ProtectedTextInput from "./ProtectedTextInput";
 import About from "@/pages/pages/About";
 import Features from "@/pages/pages/Features";
 import Contact from "@/pages/pages/Contact";
+import ProtectedProfile from "./ProtectedProfile";
 
 
 export const router = createBrowserRouter([
@@ -21,6 +22,10 @@ export const router = createBrowserRouter([
       {
         path: "/text-response",
         Component: ProtectedTextInput,
+      },
+      {
+        path: "/profile",
+        Component: ProtectedProfile,
       },
       {
         path: "/about",

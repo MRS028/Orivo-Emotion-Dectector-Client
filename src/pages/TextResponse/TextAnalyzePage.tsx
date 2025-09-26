@@ -1,17 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import Navbar from "../shared/Navbar";
 import TextResponseBox from "./TextInput";
 import Footer from "../shared/Footer";
+import { useAuth } from "@/Hooks/useAuth";
+
 
 const TextAnalyzePage: React.FC = () => {
-  const submitToServer = async (_text: string) => {
-    void _text;
-    // Replace with your real endpoint & error handling
-    // const res = await api.post("/emotion/text", { text });
-    // Example response handling:
-    // return res.data
-    // console.log("server response:", res.data);
-  };
+  
+  const { user } = useAuth();
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
@@ -23,8 +20,9 @@ const TextAnalyzePage: React.FC = () => {
         <TextResponseBox
           placeholder="Type a sentence to analyze emotions..."
           maxLength={1500}
-          onSubmit={submitToServer}
           autoClear={false}
+          // Pass user as prop if TextResponseBox needs it
+          user={user}
         />
       </main>
       <Footer />
