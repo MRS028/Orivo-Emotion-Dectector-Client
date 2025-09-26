@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { FaRegSmileBeam } from "react-icons/fa";
 import { MdImageSearch, MdOutlineAudiotrack } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
@@ -8,7 +9,8 @@ const Home = () => {
       {/* Hero Section */}
       <div className="max-w-3xl">
         <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight">
-          Understand Emotions with <span className="text-indigo-600">Orivo</span>
+          Understand Emotions with{" "}
+          <span className="text-indigo-600">Orivo</span>
         </h1>
         <p className="mt-4 text-lg text-gray-600">
           Real-time AI emotion detection from{" "}
@@ -18,9 +20,12 @@ const Home = () => {
         </p>
 
         <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-center">
-          <Button className="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-full">
-            Try Now
-          </Button>
+          <Link to="/text-response">
+            {" "}
+            <Button className="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-full">
+              Try Now
+            </Button>
+          </Link>
           <Button variant="outline" className="px-8 py-3 rounded-full">
             Learn More
           </Button>
