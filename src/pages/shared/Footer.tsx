@@ -1,10 +1,12 @@
+import Logo from "@/assets/logo";
+
 const Footer = () => {
   return (
     <footer className="bg-gray-900 text-gray-300">
       <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Brand */}
         <div>
-          <h2 className="text-2xl font-bold text-white">Orivo</h2>
+          <h2 className="text-xl font-bold text-white flex flex-center"><Logo/> <span className="text-3xl">Orivo</span></h2>
           <p className="mt-3 text-sm">
             Emotion detection powered by AI — text, image & audio.
           </p>

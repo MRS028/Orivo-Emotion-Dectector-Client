@@ -79,7 +79,7 @@ const featuresData = [
 const Features: React.FC = () => {
     useScrollUp();
   return (
-    <div className="lg:max-w-7xl mx-auto py-20 lg:py-28 bg-gradient-to-br  dark:from-slate-900 dark:via-blue-900/20 dark:to-indigo-900/20">
+    <div className="lg:max-w-7xl mx-auto py-10 lg:py-10 bg-gradient-to-br  dark:from-slate-900 dark:via-blue-900/20 dark:to-indigo-900/20">
       <div className="container mx-auto px-4 md:px-6">
         {/* Section Header */}
         <div className="max-w-4xl mx-auto text-center mb-16 lg:mb-20">

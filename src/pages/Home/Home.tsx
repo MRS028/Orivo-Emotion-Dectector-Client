@@ -28,9 +28,12 @@ const Home = () => {
               Try Now
             </Button>
           </Link>
-          <Button variant="outline" className="px-8 py-3 rounded-full">
-            Learn More
-          </Button>
+          <Link to="/about">
+            {" "}
+            <Button className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-8 py-3 rounded-full">
+              Learn More
+            </Button>
+          </Link>
         </div>
       </div>
 
