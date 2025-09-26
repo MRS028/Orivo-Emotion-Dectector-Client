@@ -8,6 +8,7 @@ import About from "@/pages/pages/About";
 import Features from "@/pages/pages/Features";
 import Contact from "@/pages/pages/Contact";
 import ProtectedProfile from "./ProtectedProfile";
+import ProtectedHistory from "./ProtectedHistory";
 
 
 export const router = createBrowserRouter([
@@ -26,6 +27,10 @@ export const router = createBrowserRouter([
       {
         path: "/profile",
         Component: ProtectedProfile,
+      },
+      {
+        path: "/history",
+        Component: ProtectedHistory,
       },
       {
         path: "/about",

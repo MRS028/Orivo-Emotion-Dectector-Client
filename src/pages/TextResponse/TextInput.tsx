@@ -21,7 +21,7 @@ import {
   formatPercent,
   computeConfidenceGap,
 } from "@/lib/textResponseUtils";
- // JWT Protected Axios
+// JWT Protected Axios
 import "@/styles/progress-percent.css";
 
 import axios from "axios";
@@ -92,43 +92,48 @@ const ResultsSkeleton: React.FC<ResultsSkeletonProps> = ({
 
 // --- MAIN COMPONENT ---
 const TextResponseBox: React.FC<TextResponseBoxProps> = ({
-  placeholder = "Enter text to analyze... (e.g., 'I had a wonderful day!')",
+  placeholder = "Enter text to analyze...",
   maxLength = 500,
   autoClear = true,
 }) => {
   const [text, setText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState<Emotion[] | null>(null);
-  const {user} = useAuth();
+  const { user } = useAuth();
+  // console.log(user);
+  // console.log(user?.email);
 
-const handleAnalyze = async () => {
-  if (!text.trim()) return;
-  setIsLoading(true);
-  setResults(null);
+  const handleAnalyze = async () => {
+    const email = user?.email;
+    if (!text.trim()) return;
+    setIsLoading(true);
+    setResults(null);
 
-  // --- Simulate delay ---
-  await new Promise((res) => setTimeout(res, 800 + Math.random() * 700));
+    // --- Simulate delay ---
+    await new Promise((res) => setTimeout(res, 800 + Math.random() * 700));
 
-  // --- Generate fake emotions ---
-  const fakeEmotions = generateFakeEmotions(text.trim());
-  setResults(fakeEmotions);
-  const topEmotion = fakeEmotions[0];
+    // --- Generate fake emotions ---
+    const fakeEmotions = generateFakeEmotions(text.trim());
+    setResults(fakeEmotions);
+    const topEmotion = fakeEmotions[0];
 
-  // --- Save emotion to database ---
-  try {
-    await axios.post("http://localhost:5000/api/emotions", {
-      email: user?.email, // You'll need to pass the user prop or use context
-      text: text.trim(),
-      detectedEmotion: topEmotion.label,
-    });
-    console.log("✅ Emotion saved to server!");
-  } catch (err) {
-    console.error("❌ Failed to save emotion:", err);
-  }
+    // --- Save emotion to database ---
+    try {
+      await axios.post("http://localhost:5000/api/emotions", {
+        email,
+        text: text.trim(),
+        detectedEmotion: topEmotion.label,
+      });
+      // console.log("✅ Emotion saved to server!");
+      // console.log("email", email);
+      // console.log("text", response.data);
+    } catch (err) {
+      console.error("❌ Failed to save emotion:", err);
+    }
 
-  setIsLoading(false);
-  if (autoClear) setText("");
-};
+    setIsLoading(false);
+    if (autoClear) setText("");
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
@@ -145,71 +150,88 @@ const handleAnalyze = async () => {
   const confidenceGap = computeConfidenceGap(results);
 
   return (
-    <div className="w-full max-w-2xl mx-auto space-y-6 pt-5">
+    <div className="w-full max-w-2xl mx-auto space-y-6 pt-5 pb-5">
       {/* INPUT CARD */}
-      <Card className="shadow-lg border-primary/20">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <span className="p-2 bg-primary/10 rounded-lg text-primary">
-              <Sparkles className="w-6 h-6" />
-            </span>
-            Text Emotion Analyzer
-          </CardTitle>
-          <CardDescription>
-            Type something below and we'll guess the emotion behind the text.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Textarea
-            placeholder={placeholder}
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            onKeyDown={handleKeyDown}
-            rows={5}
-            maxLength={maxLength}
-            className="resize-none text-base focus-visible:ring-2 focus-visible:ring-primary/50"
-          />
-        </CardContent>
-        <CardFooter className="flex justify-between items-center">
-          <span className="text-xs text-muted-foreground">
-            Tip: Press{" "}
-            <kbd className="px-2 py-1 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-md">
-              Ctrl
-            </kbd>{" "}
-            +{" "}
-            <kbd className="px-2 py-1 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-md">
-              Enter
-            </kbd>{" "}
-            to submit.
-          </span>
-          <div className="flex items-center gap-4">
-            <span
-              className={clsx(
-                "text-sm",
-                text.length > maxLength * 0.9
-                  ? "text-destructive font-medium"
-                  : "text-muted-foreground"
-              )}
-            >
-              {text.length}/{maxLength}
-            </span>
-            <Button
-              onClick={handleAnalyze}
-              disabled={isLoading || text.trim().length === 0}
-              className="w-32"
-            >
-              {isLoading ? (
-                <Loader2 className="w-5 h-5 animate-spin" />
-              ) : (
-                <>
-                  <Send className="w-4 h-4 mr-2" />
-                  Analyze
-                </>
-              )}
-            </Button>
+     <Card className="shadow-xl border-primary/10 bg-gradient-to-br from-white to-primary/5 backdrop-blur-sm w-full max-w-4xl mx-auto">
+  <CardHeader className="pb-6 px-8 pt-8">
+    <CardTitle className="flex items-center gap-4 text-3xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+      <div className="p-3 bg-gradient-to-br from-primary to-primary/80 rounded-2xl text-white shadow-2xl">
+        <Sparkles className="w-8 h-8" />
+      </div>
+      Advanced Emotion Analysis Tool
+    </CardTitle>
+    <CardDescription className="text-lg text-muted-foreground pt-3 leading-relaxed">
+      Enter your text below for comprehensive emotional sentiment analysis. Our advanced AI detects subtle emotional patterns and provides detailed insights into your writing's emotional undertones.
+    </CardDescription>
+  </CardHeader>
+  
+  <CardContent className="pb-8 px-8">
+    <div className="relative">
+      <Textarea
+        placeholder={placeholder}
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        onKeyDown={handleKeyDown}
+        rows={10}
+        maxLength={maxLength}
+        className="resize-none text-lg border-2 focus:border-primary/30 transition-all duration-200 rounded-2xl p-6 bg-white/60 backdrop-blur-sm shadow-inner focus-visible:ring-4 focus-visible:ring-primary/20 min-h-[150px] leading-relaxed"
+      />
+      {text.length > 0 && (
+        <div className="absolute bottom-4 right-4">
+          <div className={clsx(
+            "text-sm font-semibold px-3 py-1.5 rounded-full transition-colors border backdrop-blur-sm",
+            text.length > maxLength * 0.9
+              ? "bg-destructive/10 text-destructive border-destructive/20"
+              : "bg-primary/10 text-primary border-primary/20"
+          )}>
+            {text.length}/{maxLength}
           </div>
-        </CardFooter>
-      </Card>
+        </div>
+      )}
+    </div>
+  </CardContent>
+
+  <CardFooter className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 pt-6 border-t border-primary/10 px-8 pb-8">
+    <div className="flex flex-col gap-3">
+      <span className="text-base text-muted-foreground font-semibold">
+        Keyboard Shortcuts
+      </span>
+      <div className="flex items-center gap-3">
+        <kbd className="px-3 py-2 text-sm font-semibold text-gray-700 bg-gray-100/80 border border-gray-300 rounded-xl shadow-sm backdrop-blur-sm min-w-[60px] text-center">
+          Ctrl
+        </kbd>
+        <span className="text-base text-muted-foreground font-medium">+</span>
+        <kbd className="px-3 py-2 text-sm font-semibold text-gray-700 bg-gray-100/80 border border-gray-300 rounded-xl shadow-sm backdrop-blur-sm min-w-[70px] text-center">
+          Enter
+        </kbd>
+        <span className="text-base text-muted-foreground ml-3">- Quick Analysis</span>
+      </div>
+    </div>
+    
+    <div className="flex items-center gap-4 w-full sm:w-auto">
+      <div className="flex-1 sm:flex-none">
+        <Button
+          onClick={handleAnalyze}
+          disabled={isLoading || text.trim().length === 0 || text.length > maxLength}
+          className="w-full sm:w-44 h-12 bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-xl hover:shadow-2xl transition-all duration-200 transform hover:scale-105 disabled:transform-none disabled:opacity-50 text-base font-semibold"
+          size="lg"
+        >
+          {isLoading ? (
+            <>
+              <Loader2 className="w-5 h-5 mr-3 animate-spin" />
+              Analyzing...
+            </>
+          ) : (
+            <>
+              <Send className="w-5 h-5 mr-3" />
+              Analyze Text
+            </>
+          )}
+        </Button>
+      </div>
+    </div>
+  </CardFooter>
+</Card>
 
       {/* RESULTS */}
       {isLoading && (
@@ -217,9 +239,9 @@ const handleAnalyze = async () => {
       )}
 
       {results && !isLoading && topEmotion && (
-        <Card className="mt-6 animate-fade-in shadow-md">
+        <Card className="mt-6 animate-fade-in shadow-md mx-2 lg:mx-0">
           <CardHeader>
-            <CardTitle className="text-xl">Analysis Results</CardTitle>
+            <CardTitle className="text-2xl font-bold">Analysis Results</CardTitle>
             <div className="flex items-baseline gap-2 pt-2">
               <p className="text-muted-foreground">Top Emotion:</p>
               <div
@@ -242,7 +264,8 @@ const handleAnalyze = async () => {
               <div className="mt-2 text-sm text-muted-foreground">
                 Close call — could also be{" "}
                 <strong>
-                  {secondEmotion.label} ({Math.round(secondEmotion.score * 100)}%)
+                  {secondEmotion.label} ({Math.round(secondEmotion.score * 100)}
+                  %)
                 </strong>
               </div>
             )}

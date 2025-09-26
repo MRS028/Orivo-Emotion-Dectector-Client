@@ -1,7 +1,8 @@
 // ProtectedTextInput.tsx
 import React from "react";
 import PrivateRoute from "./PrivateRoute";
-import Profile from "@/pages/profile/Profile";
+import Profile from "@/pages/profile/userprofile";
+
 
 const ProtectedProfile: React.FC = () => (
   <PrivateRoute>

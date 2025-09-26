@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/Hooks/useAuth";
 import Swal from "sweetalert2";
+import Logo from "@/assets/logo";
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,9 +19,9 @@ const Navbar: React.FC = () => {
   ];
 
   const userLinks = [
-    { name: "Dashboard", href: "/dashboard" },
+    { name: "Detect Emotion", href: "/text-response" },
     { name: "Profile", href: "/profile" },
-    { name: "Emotions", href: "/emotions" },
+    { name: "History", href: "/history" },
   ];
 
   // ✅ SweetAlert logout
@@ -53,8 +54,11 @@ const Navbar: React.FC = () => {
     <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-md border-b">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
         {/* Logo */}
-        <Link to="/" className="text-2xl font-bold text-indigo-600">
-          Orivo
+        <Link to="/" className="text-2xl font-bold text-indigo-600 inline-block">
+          <div className="flex items-center ">
+            <Logo />  Orivo
+          </div>
+        
         </Link>
 
         {/* Desktop Menu */}

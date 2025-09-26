@@ -54,8 +54,15 @@ export function generateFakeEmotions(text: string): Emotion[] {
 }
 
 const IconPlaceholder: React.FC<{ className?: string }> = () => null;
+// interface EmotionConfig {
+//   [key: string]: {
+//     icon: ElementType<JSX.IntrinsicElements[keyof JSX.IntrinsicElements]>;
+//     color: string;
+//     progressBar: string;
+//   };
+// }
 
-export const emotionConfig: {
+export  const emotionConfig: {
   [key in EmotionLabel]: {
     icon: React.ElementType;
     color: string;
