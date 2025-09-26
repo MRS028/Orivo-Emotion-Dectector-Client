@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 import { Button } from "@/components/ui/button";
-import { Link, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "@/Hooks/useAuth";
 import Swal from "sweetalert2";
 import Logo from "@/assets/logo";
@@ -54,38 +54,43 @@ const Navbar: React.FC = () => {
     <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-md border-b">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
         {/* Logo */}
-        <Link to="/" className="text-2xl font-bold text-indigo-600 inline-block">
+        <NavLink to="/" className="text-2xl font-bold text-indigo-600 inline-block">
           <div className="flex items-center ">
             <Logo />  Orivo
           </div>
-        
-        </Link>
+        </NavLink>
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-6">
           {(user ? userLinks : guestLinks).map((link) => (
-            <Link
+            <NavLink
               key={link.name}
               to={link.href}
-              className="text-gray-700 hover:text-indigo-600 transition-colors font-medium"
+              className={({ isActive }) => 
+                `transition-colors font-medium ${
+                  isActive 
+                    ? "text-indigo-600" 
+                    : "text-gray-700 hover:text-indigo-600"
+                }`
+              }
             >
               {link.name}
-            </Link>
+            </NavLink>
           ))}
 
           {user ? (
             <Button
               onClick={handleLogout}
-              className="bg-red-500 hover:bg-red-600 text-white  rounded-full"
+              className="bg-red-500 hover:bg-red-600 text-white rounded-full"
             >
               Logout
             </Button>
           ) : (
-            <Link to="/signup">
+            <NavLink to="/signup">
               <Button className="bg-indigo-600 hover:bg-indigo-700 text-white w-full rounded-full">
                 Get Started
               </Button>
-            </Link>
+            </NavLink>
           )}
         </div>
 
@@ -103,14 +108,20 @@ const Navbar: React.FC = () => {
         <div className="md:hidden bg-white border-t shadow-lg">
           <div className="flex flex-col space-y-3 p-4">
             {(user ? userLinks : guestLinks).map((link) => (
-              <Link
+              <NavLink
                 key={link.name}
                 to={link.href}
-                className="text-gray-700 hover:text-indigo-600 transition-colors font-medium"
+                className={({ isActive }) => 
+                  `transition-colors font-medium ${
+                    isActive 
+                      ? "text-indigo-600" 
+                      : "text-gray-700 hover:text-indigo-600"
+                  }`
+                }
                 onClick={() => setIsOpen(false)} // close menu on link click
               >
                 {link.name}
-              </Link>
+              </NavLink>
             ))}
 
             {user ? (
@@ -124,14 +135,14 @@ const Navbar: React.FC = () => {
                 Logout
               </Button>
             ) : (
-              <Link to="/signup">
+              <NavLink to="/signup">
                 <Button
                   className="bg-indigo-600 hover:bg-indigo-700 text-white w-full rounded-full"
                   onClick={() => setIsOpen(false)}
                 >
                   Get Started
                 </Button>
-              </Link>
+              </NavLink>
             )}
           </div>
         </div>
