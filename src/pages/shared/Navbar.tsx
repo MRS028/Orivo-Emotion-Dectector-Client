@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,9 +30,14 @@ const Navbar = () => {
               {link.name}
             </a>
           ))}
-          <Button className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-full px-6">
-            Get Started
-          </Button>
+          <Link
+            to="/signup"
+            
+          >
+            <Button className="bg-indigo-600 hover:bg-indigo-700 text-white w-full rounded-full">
+              Get Started
+            </Button>{" "}
+          </Link>
         </div>
 
         {/* Mobile Toggle */}
@@ -56,9 +62,13 @@ const Navbar = () => {
                 {link.name}
               </a>
             ))}
-            <Button className="bg-indigo-600 hover:bg-indigo-700 text-white w-full rounded-full">
-              Get Started
-            </Button>
+            <Link
+              to="/signup"
+            >
+              <Button className="bg-indigo-600 hover:bg-indigo-700 text-white w-full rounded-full">
+                Get Started
+              </Button>{" "}
+            </Link>
           </div>
         </div>
       )}
