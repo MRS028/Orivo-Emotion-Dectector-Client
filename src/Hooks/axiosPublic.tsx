@@ -3,7 +3,7 @@ import type { AxiosInstance } from "axios";
 import { useMemo } from "react";
 
 const axiosPublic: AxiosInstance = axios.create({
-  baseURL: "http://localhost:5000/",
+  baseURL: "https://orivo-emotion-detector-backend.vercel.app/",
 });
 
 const useAxiosPublic = (): AxiosInstance => {

@@ -1,3 +1,4 @@
+import useScrollUp from "@/Hooks/useScrollUp";
 import React, { useState } from "react";
 import Swal from "sweetalert2";
 
@@ -5,6 +6,7 @@ const Contact: React.FC = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  useScrollUp();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,9 +24,12 @@ const Contact: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-16 px-6">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4 text-center">Contact Us</h1>
+        <h1 className="text-4xl font-bold text-gray-900 mb-4 text-center">
+          Contact Us
+        </h1>
         <p className="text-gray-600 text-lg mb-10 text-center">
-          Have a question or feedback? Send us a message and we’ll get back to you as soon as possible.
+          Have a question or feedback? Send us a message and we’ll get back to
+          you as soon as possible.
         </p>
 
         <form

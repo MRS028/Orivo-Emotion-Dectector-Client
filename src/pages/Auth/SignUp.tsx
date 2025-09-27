@@ -58,55 +58,129 @@ const SignUp: React.FC = () => {
   };
 
   const onSubmit = async (data: SignUpFormData) => {
-  try {
-    // 1️⃣ Firebase Authentication
-    const userCredential = await createUser(data.email, data.password);
-    if (userCredential.user) {
-      await updateUserProfile(data.name, "");
+    try {
+      // 1️⃣ Firebase Authentication
+      const userCredential = await createUser(data.email, data.password);
+      if (userCredential.user) {
+        await updateUserProfile(data.name, "");
 
-      // 2️⃣ Send user data to your server
-      try {
-        const res = await axios.post("http://localhost:5000/api/users/register", {
-          name: data.name,
-          email: data.email,
-          
-        });
-        console.log("✅ User saved on server:", res.data);
-      } catch (err: any) {
-        console.error("❌ Failed to save user on server:", err.response?.data || err.message);
-      }
+        // 2️⃣ Send user data to your server
+       try {
+  // Show loading alert
+  Swal.fire({
+    title: "Signing up your new user...",
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+    },
+  });
 
-      showSuccessAlert("Your account has been created successfully!");
-      navigate("/");
+  const res = await axios.post(
+    "https://orivo-emotion-detector-backend.vercel.app/api/users/register",
+    {
+      name: data.name,
+      email: data.email,
     }
-  } catch (error: any) {
-    const msg =
-      error.message || "Failed to create account. Please try again.";
-    setError("root", { type: "manual", message: msg });
-    showErrorAlert(msg);
-  }
-};
+  );
 
- const handleGoogleSignUp = async () => {
+  // Close loading alert
+  Swal.close();
+
+  if (!res.data) {
+    throw new Error("Failed to save user on server.");
+  }
+
+  Swal.fire({
+    icon: "success",
+    title: "User saved!",
+    showConfirmButton: false,
+    timer: 1500,
+  });
+
+  // console.log("✅ User saved on server:", res.data);
+} catch (err: any) {
+  // Close loading if error occurs
+  Swal.close();
+
+  Swal.fire({
+    icon: "error",
+    title: "Failed",
+    text: err.response?.data?.error || err.message,
+  });
+
+  console.error(
+    "❌ Failed to save user on server:",
+    err.response?.data || err.message
+  );
+}
+
+        showSuccessAlert("Your account has been created successfully!");
+        navigate("/");
+      }
+    } catch (error: any) {
+      const msg =
+        error.message || "Failed to create account. Please try again.";
+      setError("root", { type: "manual", message: msg });
+      showErrorAlert(msg);
+    }
+  };
+
+  const handleGoogleSignUp = async () => {
   try {
+    // 🔹 Show loading alert
+    Swal.fire({
+      title: "Signing in with Google...",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
+    // 🔹 Google Sign-In
     const result = await googleSignIn();
     const user = result.user;
 
-    // Save user on server
-    await axios.post("http://localhost:5000/api/users", {
-      name: user.displayName,
-      email: user.email,
+    // 🔹 Save user on backend
+    await axios.post(
+      "https://orivo-emotion-detector-backend.vercel.app/api/users/register",
+      {
+        name: user?.displayName,
+        email: user?.email,
+      }
+    );
+
+    // 🔹 Close loading
+    Swal.close();
+
+    // 🔹 Show success
+    Swal.fire({
+      icon: "success",
+      title: "Signed up successfully!",
+      showConfirmButton: false,
+      timer: 1500,
     });
 
-    showSuccessAlert("Signed up successfully with Google!");
+    // 🔹 Navigate to home
     navigate("/");
   } catch (error: any) {
-    const msg = error.message || "Google sign up failed. Please try again.";
+    // 🔹 Close loading if error occurs
+    Swal.close();
+
+    const msg =
+      error.response?.data?.error ||
+      error.message ||
+      "Google sign up failed. Please try again.";
+
+    // 🔹 Show error alert
+    Swal.fire({
+      icon: "error",
+      title: "Failed",
+      text: msg,
+    });
+
     setError("root", { type: "manual", message: msg });
-    showErrorAlert(msg);
   }
 };
-
 
   const handleFacebookSignUp = async () => {
     try {

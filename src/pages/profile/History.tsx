@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect, } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -24,8 +25,6 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { emotionConfig } from "@/lib/textResponseUtils";
 import useScrollUp from "@/Hooks/useScrollUp";
-
-
 
 interface EmotionHistory {
   _id: string;
@@ -69,9 +68,12 @@ const History: React.FC = () => {
     if (!user?.email) return;
 
     try {
-      const response = await axios.get(`http://localhost:5000/api/emotions`, {
-        params: { email: user.email },
-      });
+      const response = await axios.get(
+        `https://orivo-emotion-detector-backend.vercel.app/api/emotions`,
+        {
+          params: { email: user.email },
+        }
+      );
       setEmotions(response.data);
     } catch (error) {
       showErrorAlert(error);
@@ -106,7 +108,9 @@ const History: React.FC = () => {
 
     setDeletingId(id);
     try {
-      await axios.delete(`http://localhost:5000/api/emotions/${id}`);
+      await axios.delete(
+        `https://orivo-emotion-detector-backend.vercel.app/api/emotions/${id}`
+      );
       setEmotions(emotions.filter((emotion) => emotion._id !== id));
       showSuccessAlert("Deleted!", "The emotion record has been deleted.");
     } catch (error) {
@@ -135,9 +139,12 @@ const History: React.FC = () => {
     if (!result.isConfirmed) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/emotions`, {
-        params: { email: user.email },
-      });
+      await axios.delete(
+        `https://orivo-emotion-detector-backend.vercel.app/api/emotions`,
+        {
+          params: { email: user.email },
+        }
+      );
       setEmotions([]);
       showSuccessAlert("Cleared!", "All emotion history has been deleted.");
     } catch (error) {
@@ -232,6 +239,7 @@ const History: React.FC = () => {
           <CardContent>
             <div className="flex flex-wrap gap-2">
               {Object.entries(emotionStats).map(([emotion, count]) => {
+                // @ts-ignore
                 const config = emotionConfig[emotion] || emotionConfig.Happy;
                 return (
                   <Badge
@@ -266,6 +274,7 @@ const History: React.FC = () => {
                     {Object.keys(emotionConfig).map((emotion) => (
                       <SelectItem key={emotion} value={emotion.toLowerCase()}>
                         <div className="flex items-center gap-2">
+                          {/* @ts-ignore */}
                           {React.createElement(emotionConfig[emotion].icon, {
                             className: "w-3 h-3",
                           })}
@@ -318,6 +327,7 @@ const History: React.FC = () => {
         <div className="space-y-4">
           {filteredAndSortedEmotions.map((emotion) => {
             const config =
+              // @ts-expect-error
               emotionConfig[emotion?.detectedEmotion] || emotionConfig.Happy;
             return (
               <Card

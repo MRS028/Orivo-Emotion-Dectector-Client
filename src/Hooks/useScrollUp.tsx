@@ -1,29 +1,12 @@
-import { useState, useEffect } from "react";
-
-const useScrollUp = (threshold = 300) => {
-  const [showScroll, setShowScroll] = useState(false);
+// hooks/useScrollToTop.ts
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+const useScrollUp = (): void => {
+  const { pathname } = useLocation();
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > threshold) {
-        setShowScroll(true);
-      } else {
-        setShowScroll(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [threshold]);
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
-
-  return { showScroll, scrollToTop };
+    window.scrollTo(0, 0);
+  }, [pathname]);
 };
 
 export default useScrollUp;

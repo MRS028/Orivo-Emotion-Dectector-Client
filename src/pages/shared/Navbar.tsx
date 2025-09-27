@@ -10,6 +10,7 @@ const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user, logOut } = useAuth(); // User authentication state
   const navigate = useNavigate();
+  // console.log(user);
 
   const guestLinks = [
     { name: "Home", href: "/" },
@@ -22,6 +23,9 @@ const Navbar: React.FC = () => {
     { name: "Detect Emotion", href: "/text-response" },
     { name: "Profile", href: "/profile" },
     { name: "History", href: "/history" },
+    { name: "Home", href: "/" },
+    { name: "Features", href: "/features" },
+    { name: "About", href: "/about" },
   ];
 
   // ✅ SweetAlert logout

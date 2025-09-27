@@ -2,9 +2,9 @@ import axios from "axios";
 
 // In your axiosPrivate configuration
 const axiosPrivate = axios.create({
-  baseURL: 'http://localhost:5000/api', // Make sure this matches your server
+  baseURL: "https://orivo-emotion-detector-backend.vercel.app/api", // Make sure this matches your server
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 

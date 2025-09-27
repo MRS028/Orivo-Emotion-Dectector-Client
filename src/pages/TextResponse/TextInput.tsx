@@ -119,11 +119,14 @@ const TextResponseBox: React.FC<TextResponseBoxProps> = ({
 
     // --- Save emotion to database ---
     try {
-      await axios.post("http://localhost:5000/api/emotions", {
-        email,
-        text: text.trim(),
-        detectedEmotion: topEmotion.label,
-      });
+      await axios.post(
+        "https://orivo-emotion-detector-backend.vercel.app/api/emotions",
+        {
+          email,
+          text: text.trim(),
+          detectedEmotion: topEmotion.label,
+        }
+      );
       // console.log("✅ Emotion saved to server!");
       // console.log("email", email);
       // console.log("text", response.data);
@@ -152,86 +155,98 @@ const TextResponseBox: React.FC<TextResponseBoxProps> = ({
   return (
     <div className="w-full max-w-2xl mx-auto space-y-6 pt-5 pb-5">
       {/* INPUT CARD */}
-     <Card className="shadow-xl border-primary/10 bg-gradient-to-br from-white to-primary/5 backdrop-blur-sm w-full max-w-4xl mx-auto">
-  <CardHeader className="pb-6 px-8 pt-8">
-    <CardTitle className="flex items-center gap-4 text-3xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-      <div className="p-3 bg-gradient-to-br from-primary to-primary/80 rounded-2xl text-white shadow-2xl">
-        <Sparkles className="w-8 h-8" />
-      </div>
-      Advanced Emotion Analysis Tool
-    </CardTitle>
-    <CardDescription className="text-lg text-muted-foreground pt-3 leading-relaxed">
-      Enter your text below for comprehensive emotional sentiment analysis. Our advanced AI detects subtle emotional patterns and provides detailed insights into your writing's emotional undertones.
-    </CardDescription>
-  </CardHeader>
-  
-  <CardContent className="pb-8 px-8">
-    <div className="relative">
-      <Textarea
-        placeholder={placeholder}
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        onKeyDown={handleKeyDown}
-        rows={10}
-        maxLength={maxLength}
-        className="resize-none text-lg border-2 focus:border-primary/30 transition-all duration-200 rounded-2xl p-6 bg-white/60 backdrop-blur-sm shadow-inner focus-visible:ring-4 focus-visible:ring-primary/20 min-h-[150px] leading-relaxed"
-      />
-      {text.length > 0 && (
-        <div className="absolute bottom-4 right-4">
-          <div className={clsx(
-            "text-sm font-semibold px-3 py-1.5 rounded-full transition-colors border backdrop-blur-sm",
-            text.length > maxLength * 0.9
-              ? "bg-destructive/10 text-destructive border-destructive/20"
-              : "bg-primary/10 text-primary border-primary/20"
-          )}>
-            {text.length}/{maxLength}
-          </div>
-        </div>
-      )}
-    </div>
-  </CardContent>
+      <Card className="shadow-xl border-primary/10 bg-gradient-to-br from-white to-primary/5 backdrop-blur-sm w-full max-w-4xl mx-auto">
+        <CardHeader className="pb-6 px-8 pt-8">
+          <CardTitle className="flex items-center gap-4 text-3xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+            <div className="p-3 bg-gradient-to-br from-primary to-primary/80 rounded-2xl text-white shadow-2xl">
+              <Sparkles className="w-8 h-8" />
+            </div>
+            Advanced Emotion Analysis Tool
+          </CardTitle>
+          <CardDescription className="text-lg text-muted-foreground pt-3 leading-relaxed">
+            Enter your text below for comprehensive emotional sentiment
+            analysis. Our advanced AI detects subtle emotional patterns and
+            provides detailed insights into your writing's emotional undertones.
+          </CardDescription>
+        </CardHeader>
 
-  <CardFooter className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 pt-6 border-t border-primary/10 px-8 pb-8">
-    <div className="flex flex-col gap-3">
-      <span className="text-base text-muted-foreground font-semibold">
-        Keyboard Shortcuts
-      </span>
-      <div className="flex items-center gap-3">
-        <kbd className="px-3 py-2 text-sm font-semibold text-gray-700 bg-gray-100/80 border border-gray-300 rounded-xl shadow-sm backdrop-blur-sm min-w-[60px] text-center">
-          Ctrl
-        </kbd>
-        <span className="text-base text-muted-foreground font-medium">+</span>
-        <kbd className="px-3 py-2 text-sm font-semibold text-gray-700 bg-gray-100/80 border border-gray-300 rounded-xl shadow-sm backdrop-blur-sm min-w-[70px] text-center">
-          Enter
-        </kbd>
-        <span className="text-base text-muted-foreground ml-3">- Quick Analysis</span>
-      </div>
-    </div>
-    
-    <div className="flex items-center gap-4 w-full sm:w-auto">
-      <div className="flex-1 sm:flex-none">
-        <Button
-          onClick={handleAnalyze}
-          disabled={isLoading || text.trim().length === 0 || text.length > maxLength}
-          className="w-full sm:w-44 h-12 bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-xl hover:shadow-2xl transition-all duration-200 transform hover:scale-105 disabled:transform-none disabled:opacity-50 text-base font-semibold"
-          size="lg"
-        >
-          {isLoading ? (
-            <>
-              <Loader2 className="w-5 h-5 mr-3 animate-spin" />
-              Analyzing...
-            </>
-          ) : (
-            <>
-              <Send className="w-5 h-5 mr-3" />
-              Analyze Text
-            </>
-          )}
-        </Button>
-      </div>
-    </div>
-  </CardFooter>
-</Card>
+        <CardContent className="pb-8 px-8">
+          <div className="relative">
+            <Textarea
+              placeholder={placeholder}
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              onKeyDown={handleKeyDown}
+              rows={10}
+              maxLength={maxLength}
+              className="resize-none text-lg border-2 focus:border-primary/30 transition-all duration-200 rounded-2xl p-6 bg-white/60 backdrop-blur-sm shadow-inner focus-visible:ring-4 focus-visible:ring-primary/20 min-h-[150px] leading-relaxed"
+            />
+            {text.length > 0 && (
+              <div className="absolute bottom-4 right-4">
+                <div
+                  className={clsx(
+                    "text-sm font-semibold px-3 py-1.5 rounded-full transition-colors border backdrop-blur-sm",
+                    text.length > maxLength * 0.9
+                      ? "bg-destructive/10 text-destructive border-destructive/20"
+                      : "bg-primary/10 text-primary border-primary/20"
+                  )}
+                >
+                  {text.length}/{maxLength}
+                </div>
+              </div>
+            )}
+          </div>
+        </CardContent>
+
+        <CardFooter className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 pt-6 border-t border-primary/10 px-8 pb-8">
+          <div className="flex flex-col gap-3">
+            <span className="text-base text-muted-foreground font-semibold">
+              Keyboard Shortcuts
+            </span>
+            <div className="flex items-center gap-3">
+              <kbd className="px-3 py-2 text-sm font-semibold text-gray-700 bg-gray-100/80 border border-gray-300 rounded-xl shadow-sm backdrop-blur-sm min-w-[60px] text-center">
+                Ctrl
+              </kbd>
+              <span className="text-base text-muted-foreground font-medium">
+                +
+              </span>
+              <kbd className="px-3 py-2 text-sm font-semibold text-gray-700 bg-gray-100/80 border border-gray-300 rounded-xl shadow-sm backdrop-blur-sm min-w-[70px] text-center">
+                Enter
+              </kbd>
+              <span className="text-base text-muted-foreground ml-3">
+                - Quick Analysis
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-4 w-full sm:w-auto">
+            <div className="flex-1 sm:flex-none">
+              <Button
+                onClick={handleAnalyze}
+                disabled={
+                  isLoading ||
+                  text.trim().length === 0 ||
+                  text.length > maxLength
+                }
+                className="w-full sm:w-44 h-12 bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-xl hover:shadow-2xl transition-all duration-200 transform hover:scale-105 disabled:transform-none disabled:opacity-50 text-base font-semibold"
+                size="lg"
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="w-5 h-5 mr-3 animate-spin" />
+                    Analyzing...
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-5 h-5 mr-3" />
+                    Analyze Text
+                  </>
+                )}
+              </Button>
+            </div>
+          </div>
+        </CardFooter>
+      </Card>
 
       {/* RESULTS */}
       {isLoading && (
@@ -241,7 +256,9 @@ const TextResponseBox: React.FC<TextResponseBoxProps> = ({
       {results && !isLoading && topEmotion && (
         <Card className="mt-6 animate-fade-in shadow-md mx-2 lg:mx-0">
           <CardHeader>
-            <CardTitle className="text-2xl font-bold">Analysis Results</CardTitle>
+            <CardTitle className="text-2xl font-bold">
+              Analysis Results
+            </CardTitle>
             <div className="flex items-baseline gap-2 pt-2">
               <p className="text-muted-foreground">Top Emotion:</p>
               <div
