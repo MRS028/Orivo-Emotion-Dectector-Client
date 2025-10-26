@@ -44,7 +44,7 @@ frontend/
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/your-username/emotion-detection-frontend.git
+git clone https://github.com/MRS028/Orivo-Emotion-Dectector-Client.git
 cd emotion-detection-frontend
 ````
 

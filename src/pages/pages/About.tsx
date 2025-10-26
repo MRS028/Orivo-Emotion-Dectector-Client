@@ -7,33 +7,84 @@ import {
   Eye,
   Gem,
   Linkedin,
-  Twitter,
+  
   Users,
   Target,
   Heart,
+  
 } from "lucide-react";
+import { FiGithub } from "react-icons/fi";
 import { Link } from "react-router-dom";
 
-const teamMembers = [
+interface TeamMember {
+  name: string;
+  role: string;
+  id?: string;
+  imageUrl: string;
+  social: { linkedin: string; twitter: string;github:string };
+  tasks?: {
+    AppDevelopment?: string[];
+  };
+}
+
+const teamMembers: TeamMember[] = [
   {
-    name: "Alex Johnson",
-    role: "Founder & CEO",
-    imageUrl: "https://i.pravatar.cc/150?u=a042581f4e29026704d",
-    social: { linkedin: "#", twitter: "#" },
+    name: "Md Jubayer Islam",
+    role: "Leader",
+    id: "2023000000011",
+    imageUrl: "https://i.ibb.co.com/b5405gpW/image.png",
+    social: { linkedin: "#", twitter: "#",github: "#" },
+    tasks: {
+      AppDevelopment: ["Main page", "Login page", "Registration page"],
+    },
   },
   {
-    name: "Maria Garcia",
-    role: "Lead AI Engineer",
-    imageUrl: "https://i.pravatar.cc/150?u=a042581f4e29026704e",
-    social: { linkedin: "#", twitter: "#" },
+    name: "Tanvirul Hoque Faysal",
+    role: "Team Member",
+    id: "2023000000031",
+    imageUrl: "https://i.ibb.co.com/TBrcK3wk/image.png",
+    social: { linkedin: "#", twitter: "#",github: "#" },
+    tasks: {
+      AppDevelopment: ["Emulator Page and its functionality"],
+    },
   },
   {
-    name: "Sam Chen",
-    role: "Head of Product",
-    imageUrl: "https://i.pravatar.cc/150?u=a042581f4e29026704f",
-    social: { linkedin: "#", twitter: "#" },
+    name: "Mehedi Hasan Siddique",
+    role: "Team Member",
+    id: "2023000000033",
+    imageUrl: "https://i.ibb.co.com/0y775c9F/image.png",
+    social: { linkedin: "#", twitter: "#",github: "#" },
+    tasks: {
+      AppDevelopment: ["History Page card implementation"],
+    },
+  },
+  {
+    name: "Md Rifat Sheikh",
+    role: "Team Member",
+    id: "2023000000131",
+    imageUrl: "https://i.ibb.co.com/G3n8j9CR/image.png",
+    social: { linkedin: "https://www.linkedin.com/in/mdrifatsheikh/", github: "#" },
+    tasks: {
+      AppDevelopment: [
+        "App backend",
+        "Database connect",
+        "Model connecting",
+        "Some frontend functionalities",
+      ],
+    },
+  },
+  {
+    name: "Esrat Jahan",
+    role: "Team Member",
+    id: "2023000000012",
+    imageUrl: "https://i.ibb.co.com/N6kvWpW2/image.png",
+    social: { linkedin: "#", twitter: "#",github: "#" },
+    tasks: {
+      AppDevelopment: ["About Page card implementation"],
+    },
   },
 ];
+
 
 const stats = [
   { number: "10K+", label: "Active Users", icon: Users },
@@ -41,6 +92,7 @@ const stats = [
   { number: "98%", label: "On Time Response", icon: Target },
   { number: "50+", label: "Countries", icon: Heart },
 ];
+
 
 const AboutPage = () => {
   
@@ -165,67 +217,72 @@ const AboutPage = () => {
       </section>
 
       {/* Team Section */}
-      <section className="py-20 bg-gradient-to-r from-gray-900 to-slate-800">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Meet Our Team
-            </h2>
-            <p className="text-gray-300 max-w-2xl mx-auto text-lg">
-              Passionate innovators building the future of emotional
-              intelligence technology
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {teamMembers.map((member, index) => (
-              <div
-                key={member.name}
-                className="group relative bg-white/10 backdrop-blur-sm rounded-3xl p-8 text-center border border-white/20 hover:border-white/40 transition-all duration-500 hover:scale-105"
-              >
-                <div className="relative inline-block mb-6">
-                  <img
-                    src={member.imageUrl}
-                    alt={member.name}
-                    className="w-32 h-32 rounded-full object-cover border-4 border-white/20 group-hover:border-amber-400 transition-colors duration-300"
-                  />
-                  <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-gradient-to-r from-amber-400 to-orange-400 rounded-full flex items-center justify-center">
-                    <div className="w-6 h-6 bg-white rounded-full"></div>
-                  </div>
-                </div>
-
-                <h3 className="text-xl font-bold text-white mb-2">
-                  {member.name}
-                </h3>
-                <p className="text-amber-300 font-medium mb-4">{member.role}</p>
-                <p className="text-gray-300 text-sm mb-6">
-                  {index === 0 &&
-                    "Leading our vision with 10+ years in AI technology"}
-                  {index === 1 &&
-                    "Expert in machine learning and emotional analytics"}
-                  {index === 2 &&
-                    "Product strategy and user experience innovation"}
-                </p>
-
-                <div className="flex justify-center space-x-4">
-                  <a
-                    href={member.social.linkedin}
-                    className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-blue-500 transition-colors"
-                  >
-                    <Linkedin size={18} />
-                  </a>
-                  <a
-                    href={member.social.twitter}
-                    className="w-10 h-10 bg-sky-500 rounded-full flex items-center justify-center text-white hover:bg-sky-400 transition-colors"
-                  >
-                    <Twitter size={18} />
-                  </a>
-                </div>
-              </div>
-            ))}
-          </div>
+        <section className="py-20 bg-gradient-to-r from-gray-900 to-slate-800">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            Meet Our Team
+          </h2>
+          <p className="text-gray-300 max-w-2xl mx-auto text-lg">
+            Dedicated developers building our project’s core functionality
+          </p>
         </div>
-      </section>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8  max-w-6xl mx-auto">
+          {teamMembers.map((member) => (
+            <div
+              key={member.name}
+              className="group relative h-[500px] bg-white/10 backdrop-blur-sm rounded-3xl p-8 text-center border border-white/20 hover:border-white/40 transition-all duration-500 hover:scale-105 flex flex-col justify-between"
+            >
+              <div className="relative inline-block mb-6">
+                <img
+                  src={member.imageUrl}
+                  alt={member.name}
+                  className="w-32 h-32 rounded-full object-cover border-4 border-white/20 group-hover:border-amber-400 transition-colors duration-300"
+                />
+              </div>
+
+              <h3 className="text-xl font-bold text-white mb-1">
+                {member.name}
+              </h3>
+              <p className="text-amber-300 font-medium mb-2">{member.role}</p>
+              {member.id && (
+                <p className="text-gray-400 text-sm mb-4">ID: {member.id}</p>
+              )}
+
+              {/* Only show AppDevelopment section */}
+              {member.tasks?.AppDevelopment && member.tasks.AppDevelopment.length > 0 && (
+                <div className="text-left text-gray-300 text-sm mb-6 bg-white/5 rounded-xl p-3">
+                  <p className="font-semibold text-amber-400 mb-1">
+                    App Development:
+                  </p>
+                  <ul className="list-disc list-inside text-gray-300 ml-2">
+                    {member.tasks.AppDevelopment.map((task: string, index: number) => (
+                      <li key={index}>{task}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              <div className="flex justify-center space-x-4">
+                <a
+                  href={member.social.linkedin}
+                  className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-blue-500 transition-colors"
+                >
+                  <Linkedin size={18} />
+                </a>
+                <a
+                  href={member.social.github}
+                  className="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white hover:bg-green-400 transition-colors"
+                >
+                  <FiGithub size={18} />
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
 
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-emerald-500 to-teal-600">
