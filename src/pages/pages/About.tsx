@@ -7,7 +7,6 @@ import {
   Eye,
   Gem,
   Linkedin,
-  
   Users,
   Target,
   Heart,
@@ -21,7 +20,7 @@ interface TeamMember {
   role: string;
   id?: string;
   imageUrl: string;
-  social: { linkedin: string; twitter: string;github:string };
+  social: { linkedin: string;github:string };
   tasks?: {
     AppDevelopment?: string[];
   };
@@ -33,7 +32,7 @@ const teamMembers: TeamMember[] = [
     role: "Leader",
     id: "2023000000011",
     imageUrl: "https://i.ibb.co.com/b5405gpW/image.png",
-    social: { linkedin: "#", twitter: "#",github: "#" },
+    social: { linkedin: "#",  github: "#" },
     tasks: {
       AppDevelopment: ["Main page", "Login page", "Registration page"],
     },
@@ -43,7 +42,7 @@ const teamMembers: TeamMember[] = [
     role: "Team Member",
     id: "2023000000031",
     imageUrl: "https://i.ibb.co.com/TBrcK3wk/image.png",
-    social: { linkedin: "#", twitter: "#",github: "#" },
+    social: { linkedin: "#",  github: "#" },
     tasks: {
       AppDevelopment: ["Emulator Page and its functionality"],
     },
@@ -53,7 +52,7 @@ const teamMembers: TeamMember[] = [
     role: "Team Member",
     id: "2023000000033",
     imageUrl: "https://i.ibb.co.com/0y775c9F/image.png",
-    social: { linkedin: "#", twitter: "#",github: "#" },
+    social: { linkedin: "#",  github: "#" },
     tasks: {
       AppDevelopment: ["History Page card implementation"],
     },
@@ -78,7 +77,7 @@ const teamMembers: TeamMember[] = [
     role: "Team Member",
     id: "2023000000012",
     imageUrl: "https://i.ibb.co.com/N6kvWpW2/image.png",
-    social: { linkedin: "#", twitter: "#",github: "#" },
+    social: { linkedin: "#",  github: "#" },
     tasks: {
       AppDevelopment: ["About Page card implementation"],
     },
